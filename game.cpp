@@ -64,7 +64,7 @@ static void simulate_game(Input* input, float dt)
 	//arena
 	draw_rect(0, 0, arena_half_size_x, arena_half_size_y, 0xffaa33);
 	
-	//if () 
+	if (current_game_mode == GM_GAMEPLAY)
 	{
 		//moving rectangles
 		float player_ddp_1 = 0.f;
@@ -191,27 +191,27 @@ static void simulate_game(Input* input, float dt)
 		draw_rect(80, player_p_1, player_half_size_x, player_half_size_y, 0xff0000);
 		draw_rect(-80, player_p_2, player_half_size_x, player_half_size_y, 0xff0000);
 	}
-	/*else if (current_game_mode == GM_MENU) {
-	if (pressed(BUTTON_LEFT) || pressed(BUTTON_RIGHT))
-	{
-		hot_button = !hot_button;
-	}
-	if (pressed(BUTTON_ENTER))
-	{
-		current_game_mode = GM_GAMEPLAY;
-		enemy_is_ai = hot_button ? 0 : 1;
-	}
-	if (hot_button == 0) {
-		draw_rect(20, 0, 10, 10, 0xff0000);
-		draw_rect(-20, 0, 10, 10, 0xcccccc);
-	}
-	else {
+	else if (current_game_mode == GM_MENU) {
+		if (pressed(BUTTON_LEFT) || pressed(BUTTON_RIGHT))
+		{
+			hot_button = !hot_button;
+		}
+		if (pressed(BUTTON_ENTER))
+		{
+			current_game_mode = GM_GAMEPLAY;
+			enemy_is_ai = hot_button ? 0 : 1;
+		}
+		if (hot_button == 0) {
+			draw_rect(20, 0, 10, 10, 0xff0000);
+			draw_rect(-20, 0, 10, 10, 0xcccccc);
+		}
+		else {
 		
-		draw_rect(20, 0, 10, 10, 0xcccccc);
-		draw_rect(-20, 0, 10, 10, 0xff0000);
-	}*/
+			draw_rect(20, 0, 10, 10, 0xcccccc);
+			draw_rect(-20, 0, 10, 10, 0xff0000);
+		}
 	
 
-	//}
+	}
 
 }
