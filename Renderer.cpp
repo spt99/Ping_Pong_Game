@@ -27,11 +27,11 @@ static  void clear_screen(u32 color) {
 
 static void draw_rect_in_pixels(int x0, int y0, int x1, int y1, u32 colour)
 {
-	x0 = clamp(0, x0, render_state.width);
+	{x0 = clamp(0, x0, render_state.width);
 	x1 = clamp(0, x1, render_state.width);
 	y0 = clamp(0, y0, render_state.height);
 	y1 = clamp(0, y1, render_state.height);
-	
+	}
 	
 	for (int y = y0; y < y1; y++)
 	{
@@ -39,7 +39,6 @@ static void draw_rect_in_pixels(int x0, int y0, int x1, int y1, u32 colour)
 		for (int x = x0; x < x1; x++)
 		{
 			*pixel++ = colour;
-			//*pixel++ = x - y;
 		}
 	}
 }
@@ -49,7 +48,7 @@ static float render_scale = 0.01f;
 
 static void draw_rect(float x, float y, float half_size_x, float half_size_y, u32 colour)
 {
-	// change to pixes
+	// multiplying with screen width to get rectangle dimention changing according to screen size changes
 	x *= render_state.height* render_scale;
 	y *= render_state.height* render_scale;
 	half_size_x *= render_state.height* render_scale;
@@ -66,6 +65,243 @@ static void draw_rect(float x, float y, float half_size_x, float half_size_y, u3
 	draw_rect_in_pixels(x0, y0, x1, y1, colour);
 }
 
+const char* letter[][7] = {
+	"0000",
+	"0  0",
+	"0  0",
+	"0000",
+	"0  0",
+	"0  0",
+	"0  0",
+
+	"000",
+	"0  0",
+	"0  0",
+	"000",
+	"0  0",
+	"0  0",
+	"000",
+
+	"0000",
+	"0",
+	"0",
+	"0",
+	"0",
+	"0",
+	"0000",
+
+	"000",
+	"0  0",
+	"0  0",
+	"0  0",
+	"0  0",
+	"0  0",
+	"000",
+
+	"0000",
+	"0",
+	"0",
+	"0000",
+	"0",
+	"0",
+	"0000",
+
+	"0000",
+	"0",
+	"0",
+	"0000",
+	"0",
+	"0",
+	"0",
+
+	"0000",
+	"0",
+	"0",
+	"0 00",
+	"0  0",
+	"0  0",
+	"0000 ",
+
+	"0  0",
+	"0  0",
+	"0  0",
+	"0000",
+	"0  0",
+	"0  0",
+	"0  0",
+
+	"000",
+	" 0",
+	" 0",
+	" 0",
+	" 0",
+	" 0",
+	"000",
+
+	"   0",
+	"   0",
+	"   0",
+	"   0",
+	"0  0",
+	"0  0",
+	" 00",
+
+	"000",
+	" 0",
+	" 0",
+	" 0",
+	" 0",
+	" 0",
+	"000",
+
+	"0",
+	"0",
+	"0",
+	"0",
+	"0",
+	"0",
+	"0000",
+
+	"0   0",
+	"00 00",
+	"0 0 0",
+	"0   0",
+	"0   0",
+	"0   0",
+	"0   0",
+
+	"0   0 ",
+	"00  0",
+	"0 0 0",
+	"0  00",
+	"0   0",
+	"0   0",
+	"0   0",
+
+	"0000",
+	"0  0",
+	"0  0",
+	"0  0",
+	"0  0",
+	"0  0",
+	"0000",
+
+	"0000",
+	"0  0",
+	"0  0",
+	"0000",
+	"0",
+	"0",
+	"0",
+
+	"0  0",
+	"0  0",
+	"0  0",
+	"0000",
+	"0  0",
+	"0  0",
+	"0  0",
+
+	"0000",
+	"0  0",
+	"0  0",
+	"0000",
+	"0  0",
+	"0  0",
+	"0  0",
+
+	"0000",
+	"0",
+	"0",
+	"0000",
+	"   0",
+	"   0",
+	"0000",
+
+	"0000",
+	" 0",
+	" 0",
+	" 0",
+	" 0",
+	" 0",
+	" 0",
+
+	"0  0",
+	"0  0",
+	"0  0",
+	"0  0",
+	"0  0",
+	"0  0",
+	"0000",
+
+	"0  0",
+	"0  0",
+	"0  0",
+	"0  0",
+	"0  0",
+	" 00",
+	" 0",
+
+	"0  0",
+	"0  0",
+	"0  0",
+	"0000",
+	"0  0",
+	"0  0",
+	"0  0",
+
+	"0  0",
+	"0  0",
+	"0  0",
+	"0000",
+	"0  0",
+	"0  0",
+	"0  0",
+
+	"0 0",
+	"0 0",
+	"000",
+	" 0",
+	" 0",
+	" 0",
+	" 0",
+
+	"0  0",
+	"0  0",
+	"0  0",
+	"0000",
+	"0  0",
+	"0  0",
+	"0  0",
+};
+static void draw_text(const char* text, float x ,float y, float size, u32 color) {
+	float half_size = size * 0.5f;
+	
+	float original_y = y;
+	while (*text) {
+		if (*text != 32) {
+			const char** a_letter = letter[*text - 'A'];
+			float original_x = x;
+			for (int i = 0; i < 7; i++) {
+				const char* row = a_letter[i];
+				while (*row) {
+					if (*row == '0') {
+						draw_rect(x, y, half_size, half_size, color);
+
+					}
+					row++;
+					x += size;
+				}
+				y -= size;
+				x = original_x;
+			}
+		}
+			text++;
+			x += size * 6.f;
+			y = original_y;
+		
+	}
+}
 static void draw_number(int number, float x, float y, float size, u32 color)
 {
 	float half_size = size * .5f;

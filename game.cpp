@@ -196,20 +196,28 @@ static void simulate_game(Input* input, float dt)
 		{
 			hot_button = !hot_button;
 		}
+		
 		if (pressed(BUTTON_ENTER))
 		{
 			current_game_mode = GM_GAMEPLAY;
 			enemy_is_ai = hot_button ? 0 : 1;
 		}
+		draw_text("PING PONG GAME", -55, 40, 1.4, 0xb22222);
+		draw_text("CHOOSE PLAY MODE", -35, 20, 0.7, 0xb22222);
+
+		draw_text("SINGLE PLAYER", -60, -25, 0.6, 0xff0000);
+		draw_text("MULTIPLAYER", 20, -25, 0.6, 0xff0000);
+		draw_rect(40, -10, 10, 10, 0xcccccc);
+		draw_rect(-40, -10, 10, 10, 0xcccccc);
 		if (hot_button == 0) {
-			draw_rect(20, 0, 10, 10, 0xff0000);
-			draw_rect(-20, 0, 10, 10, 0xcccccc);
+			
+			draw_rect(-40, -10, 9,9, 0x191970);
 		}
 		else {
-		
-			draw_rect(20, 0, 10, 10, 0xcccccc);
-			draw_rect(-20, 0, 10, 10, 0xff0000);
+			draw_rect(40, -10, 9, 9, 0x191970);
+			
 		}
+		
 	
 
 	}
