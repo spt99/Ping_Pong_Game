@@ -76,14 +76,14 @@ int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance, LPSTR     lpCmdLine, in
 
 	Input input = {};
 
-	float delta_time = 0.000016666f;
+	float delta_time = 0.016666f;
 	LARGE_INTEGER frame_begin_time;
 	QueryPerformanceCounter(&frame_begin_time);
 
 	float performance_frequency;
 	{
 		LARGE_INTEGER perf;
-		QueryPerformanceCounter(&perf);
+		QueryPerformanceFrequency(&perf);
 		performance_frequency = (float)perf.QuadPart;
 	}
 
@@ -111,12 +111,13 @@ int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance, LPSTR     lpCmdLine, in
 
 					switch (vk_code)
 					{
-						process_button(BUTTON_UP, VK_UP);
-						process_button(BUTTON_DOWN, VK_DOWN);
-						process_button(BUTTON_W, 'W');
-						process_button(BUTTON_S, 'S');
+						process_button(BUTTON_UP, VK_NUMPAD6);
+						process_button(BUTTON_DOWN, VK_NUMPAD3);
+						process_button(BUTTON_W, VK_UP);
+						process_button(BUTTON_S, VK_DOWN);
 						process_button(BUTTON_RIGHT, VK_RIGHT);
 						process_button(BUTTON_LEFT, VK_LEFT);
+
 						process_button(BUTTON_ENTER, VK_RETURN);
 					}
 
